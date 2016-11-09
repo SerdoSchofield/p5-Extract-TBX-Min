@@ -1,0 +1,23 @@
+#!usr/bin/perl
+use lib qw'../lib';
+use strict;
+use warnings;
+use Extract::TBX::Min 'tbxtract';
+use open ':encoding(utf8)', ':std';
+# PODNAME: tbxtract
+# ABSTRACT: Extract a TBX-Min subset from TBX-Basic
+# VERSION
+
+sub get_instructions
+{
+    return  "Usage: tbxtract path/to/tbx-basic/file.tbx";
+}
+
+if (@ARGV < 1)
+{
+    die get_instructions();
+}
+
+my $min = tbxtract($ARGV[0]);
+
+die get_instructions() if ($min == -1);
