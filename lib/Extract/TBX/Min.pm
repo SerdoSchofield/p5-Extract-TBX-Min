@@ -61,8 +61,16 @@ sub _pre_process
     );
     
     $twig->parsefile($path);
+
+    _show_ui($basic);
+}
+
+
+sub _show_ui
+{
+    my ($basic) = @_;
     
-    print @{$basic->get_termNotes()};
+    
 }
 
 sub _read_langSet
@@ -100,4 +108,14 @@ _run() unless caller;
 
 =back
 =cut
-1;
+
+package ShowUI;
+
+use strict;
+use warnings;
+use Extract::TBX::Min::UI;
+
+sub show
+{
+    my $UI = Extract::TBX::Min::UI->new();
+}
