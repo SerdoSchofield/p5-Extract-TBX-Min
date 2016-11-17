@@ -1,8 +1,10 @@
 #!usr/bin/perl
 
+use lib qw'../../../../lib';
 package Extract::TBX::Min::BasicClass;
 use strict;
 use warnings;
+use Extract::TBX::Min::Methods 'in_array';
 
 sub _init
 {
@@ -27,7 +29,7 @@ sub add_lang
 {
     my ($self, $lang) = @_;
     
-    if ( !_in_array( $self->{languages}, $lang ) )
+    if ( !in_array( $self->{languages}, $lang ) )
     {
         push( @{$self->{languages}}, $lang );
     }
@@ -44,7 +46,7 @@ sub add_descrip
 {
     my ($self, $descrip) = @_;
     
-    if ( !_in_array( $self->{descrips}, $descrip ))
+    if ( !in_array( $self->{descrips}, $descrip ))
     {
         push( @{$self->{descrips}}, $descrip );
     }
@@ -61,7 +63,7 @@ sub add_termNote
 {
     my ($self, $termNote) = @_;
     
-    if ( !_in_array( $self->{termNotes}, $termNote) )
+    if ( !in_array( $self->{termNotes}, $termNote) )
     {
         push( @{$self->{termNotes}}, $termNote );
     }
@@ -72,24 +74,6 @@ sub get_termNotes
     my ($self) = @_;
     
     return $self->{termNotes};
-}
-
-sub _in_array
-{
-    my ($array_ref, $value) = @_;
-    
-    my $ret = 0;
-    
-    foreach (@$array_ref)
-    {
-        if ( lc($value) eq lc($_) )
-        {
-            $ret = 1;
-            last;
-        }
-    }
-    
-    return $ret;
 }
 
 1;

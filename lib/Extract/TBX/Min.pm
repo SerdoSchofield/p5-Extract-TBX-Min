@@ -6,6 +6,7 @@ use lib qw'../../../lib';
 use strict;
 use warnings;
 use Extract::TBX::Min::BasicClass;
+use Extract::TBX::Min::Methods qw(in_array get_user_input splice_by_val);
 use XML::Twig;
 use Exporter::Easy (
 	OK => [ 'tbxtract' ]
@@ -69,6 +70,27 @@ sub _pre_process
 sub _show_ui
 {
     my ($basic) = @_;
+    my %langs = ( 'source', 'target' );
+    my $prompt = "Do you want to extract a monolingual or bilingual termbase [mono/bi]: ";
+    my $err_prompt = "Please only respond with the allowed values [mono/bi]: ";
+    my @allowed_vals = ('mono', 'bi');
+    my $response = get_user_input($prompt, $err_prompt, \@allowed_vals); 
+    my $isBilingual = (lc($response) eq 'mono') ? 0 : 1;
+    
+    #Choose Source
+    $prompt = "Please select the source language [@{$basic->get_langs()}]: ";
+    $err_prompt = "Please only choose from the list [@{$basic->get_langs()}]: ";
+    $langs{'source'} = get_user_input($prompt, $err_prompt, $basic->get_langs());
+    
+    #If bilingual, choose Target
+    unless(!$isBilingual)
+    {
+        my $edited_langs = splice_by_val($basic->get_langs(), $langs{'source'});
+        $prompt = "Please select the target language [@{$edited_langs}]: ";
+        $err_prompt = "Please only choose from the list [@{$edited_langs}]: ";
+        $langs{'target'} = get_user_input($prompt, $err_prompt, $edited_langs);
+    }
+    
     
     
 }
